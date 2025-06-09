@@ -1,25 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>ClanxClan ‒ Leaderboards</title>
+  <meta charset="UTF-8">
+  <title>Leaderboard – ClanxClan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="js/supabaseClient.js"></script>
 </head>
 <body>
-  <h1>Leaderboards</h1>
-  <h2>Clans by Wins</h2><ul id="clanBoard"></ul>
-  <h2>Top MVPs</h2><ul id="mvpBoard"></ul>
+  <div class="overlay">
+    <header>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Login</a>
+        <a href="clan.html">Clans</a>
+        <a href="matches.html">Matches</a>
+        <a href="leaderboard.html">Leaderboard</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <h2>Clan Leaderboard</h2>
+      <ul id="clanBoard"></ul>
+
+      <h2>MVPs Leaderboard</h2>
+      <ul id="mvpBoard"></ul>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 ClanxClan. All rights reserved.</p>
+    </footer>
+  </div>
 
   <script>
     async function loadBoards() {
       const { data: clanWins } = await supabase.rpc('get_clan_wins');
       const { data: mvps } = await supabase.rpc('get_top_mvps');
 
+      const clanElem = document.getElementById('clanBoard');
+      clanElem.innerHTML = '';
       clanWins.forEach(c => {
         const li = document.createElement('li');
         li.textContent = `${c.name}: ${c.wins} wins`;
-        document.getElementById('clanBoard').appendChild(li);
+        clanElem.appendChild(li);
       });
+
+      const mvpElem = document.getElementById('mvpBoard');
+      mvpElem.innerHTML = '';
+      mvps.forEach(m => {
+        const li = document.createElement('li');
+        li.textContent = `${m.username}: ${m.mvp_count} MVPs`;
+        mvpElem.appendChild(li);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', loadBoards);
+  </script>
+</body>
+</html>
 
       mvps.forEach(m => {
         const li = document.createElement('li');

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile – ClanxClan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="overlay">
+    <header>
+      <div class="logo-bar">
+        <img src="images/logo.png" alt="ClanxClan Logo" class="logo-img" />
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="clan.html">Clans</a>
+          <a href="matches.html">Matches</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a href="schedule.html">Schedule</a>
+          <a href="invites.html">Invites</a>
+          <a href="#" onclick="logout()">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main style="max-width: 500px; margin: 80px auto; text-align: center;">
+      <h2>My Profile</h2>
+      <div id="user-info">
+        <p><strong>Email:</strong> <span id="email">Loading...</span></p>
+        <p><strong>Username:</strong> <span id="username">Loading...</span></p>
+        <p><strong>Role:</strong> <span id="role">Loading...</span></p>
+      </div>
+
+      <h3>Update Username</h3>
+      <form id="update-form">
+        <input type="text" id="new-username" placeholder="New Username" required style="width:100%;padding:10px;margin:10px 0;">
+        <button type="submit" style="background: gold; border: none; padding: 12px 20px; cursor: pointer;">Update</button>
+      </form>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 ClanxClan</p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script>
+    let currentUserId;
+
+    async function loadProfile() {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      currentUserId = user.id;
+      document.getElementById('email').textContent = user.email;
+
+      const { data, error: profileError } = await supabase
+        .from('profiles')
+        .select('username, role')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError) {
+        alert("Error loading profile");
+        return;
+      }
+
+      document.getElementById('username').textContent = data.username;
+      document.getElementById('role').textContent = data.role;
+    }
+
+    async function logout() {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    }
+
+    document.getElementById('update-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newUsername = document.getElementById('new-username').value.trim();
+      if (!newUsername) return;
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({ username: newUsername })
+        .eq('id', currentUserId);
+
+      if (error) {
+        alert("Failed to update username");
+      } else {
+        alert("Username updated!");
+        document.getElementById('username').textContent = newUsername;
+        document.getElementById('new-username').value = '';
+      }
+    });
+
+    loadProfile();
+  </script>
+</body>
+</html>

@@ -159,6 +159,22 @@ body.index-home .center {
   width: auto;
 }
 
+/* === HEADER & LOGO === */
+.logo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 10px 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.logo-img {
+  height: 60px;
+  width: auto;
+}
+
 /* === HERO SECTION === */
 .hero-banner {
   background: url("../images/hero-bg.jpg") center/cover no-repeat;

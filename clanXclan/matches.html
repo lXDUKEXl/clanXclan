@@ -3,25 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <title>Matches - ClanxClan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="js/supabaseClient.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="js/supabaseClient.js"></script>
 </head>
 <body>
-  <header><nav>…</nav></header>
-  <div class="container">
-    <h2>Matches</h2>
-    <label>Season:</label>
-    <select id="seasonSelect" onchange="loadMatches()">
-      <option value="S1">Season 1</option>
-      <option value="S2">Season 2</option>
-    </select>
-    <ul id="match-list"></ul>
+  <div class="overlay">
+    <!-- Header -->
+    <header>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Login</a>
+        <a href="clan.html">Clans</a>
+        <a href="matches.html">Matches</a>
+        <a href="leaderboard.html">Leaderboard</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <h2>Matches</h2>
+      <label for="seasonSelect">Season:</label>
+      <select id="seasonSelect" onchange="loadMatches()">
+        <option value="S1">Season 1</option>
+        <option value="S2">Season 2</option>
+      </select>
+      <ul id="match-list"></ul>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 ClanxClan. All rights reserved.</p>
+    </footer>
   </div>
-<script>
-  async function loadMatches() {...} 
-  document.addEventListener('DOMContentLoaded', loadMatches);
-</script>
-  <footer><p>&copy; 2025 ClanxClan. All rights reserved.</p></footer>
+
+  <script>
+    async function loadMatches() {
+      const season = document.getElementById('seasonSelect').value;
+      const { data, error } = await supabase
+        .from('matches')
+        .select(`id, match_date, type, status, clanA:clan_a_id(name), clanB:clan_b_id(name)`)
+        .eq('season', season)
+        .order('match_date', { ascending: false });
+      if (error) return alert(error.message);
+      const list = document.getElementById('match-list');
+      list.innerHTML = '';
+      data.forEach(m => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <strong>${m.match_date}</strong> — 
+          ${m.clanA.name} vs ${m.clanB.name} 
+          [${m.type} · ${m.status}]
+          ${m.status==='Scheduled' ? `<a class="btn" href="report.html?id=${m.id}">Report</a>` : ''}
+        `;
+        list.appendChild(li);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', loadMatches);
+  </script>
 </body>
 </html>

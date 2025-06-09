@@ -1,24 +1,35 @@
 body {
   margin: 0;
   font-family: 'Rajdhani', sans-serif;
-  background-color: #0b0c10;
-  color: #eaeaea;
+  background: url('https://images.unsplash.com/photo-1600172454650-8b2e2f6cfc3a?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+  background-size: cover;
+  color: #f8f8f8;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.65);
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 header, footer {
-  background-color: #1f1f1f;
-  padding: 10px 20px;
+  background-color: rgba(15, 15, 15, 0.85);
+  padding: 16px 20px;
   text-align: center;
   color: #f1c40f;
+  font-size: 1.1rem;
 }
 
 nav a {
   color: #f1c40f;
   text-decoration: none;
-  margin: 0 15px;
+  margin: 0 20px;
+  font-size: 1.1rem;
   font-weight: bold;
 }
-
 nav a:hover {
   color: #2ecc71;
 }
@@ -26,29 +37,38 @@ nav a:hover {
 .container {
   max-width: 960px;
   margin: auto;
-  padding: 20px;
+  text-align: center;
 }
 
-button {
-  padding: 10px 20px;
+h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  color: #f1c40f;
+  text-shadow: 2px 2px 5px #000;
+}
+
+h2 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+}
+
+p {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+button, .btn {
+  padding: 14px 28px;
   background-color: #f1c40f;
   color: #0b0c10;
   border: none;
-  font-size: 1rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  border-radius: 4px;
-  margin: 10px 0;
+  border-radius: 6px;
+  margin: 15px 0;
+  transition: background-color 0.25s;
 }
-
 button:hover {
   background-color: #2ecc71;
 }
 
-.hero {
-  background-image: url('https://images.unsplash.com/photo-1527443224154-c3c8b632b6a3?auto=format&fit=crop&w=1500&q=80');
-  background-size: cover;
-  background-position: center;
-  padding: 100px 20px;
-  color: white;
-  text-align: center;
-}

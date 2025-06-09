@@ -1,23 +1,55 @@
 <!DOCTYPE html>
-<html>
-<head><title>Upcoming Matches</title>...scripts...</head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Schedule – ClanxClan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="js/supabaseClient.js"></script>
+</head>
 <body>
-  <h1>Upcoming Matches</h1>
-  <ul id="scheduleList"></ul>
+  <div class="overlay">
+    <header>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Login</a>
+        <a href="clan.html">Clans</a>
+        <a href="matches.html">Matches</a>
+        <a href="leaderboard.html">Leaderboard</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <h2>Upcoming Matches</h2>
+      <ul id="scheduleList"></ul>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 ClanxClan. All rights reserved.</p>
+    </footer>
+  </div>
+
   <script>
     async function loadSchedule() {
-      const { data } = await supabase
+      const today = new Date().toISOString().split('T')[0];
+      const { data, error } = await supabase
         .from('matches')
-        .select('clanA:clan_a_id(name), clanB:clan_b_id(name), match_date, type')
-        .gte('match_date', new Date().toISOString().split('T')[0])
+        .select(`clanA:clan_a_id(name), clanB:clan_b_id(name), match_date, type`)
+        .gte('match_date', today)
         .order('match_date', { ascending: true });
+      if (error) return alert(error.message);
+      const list = document.getElementById('scheduleList');
+      list.innerHTML = '';
       data.forEach(m => {
         const li = document.createElement('li');
         li.textContent = `${m.match_date}: ${m.clanA.name} vs ${m.clanB.name} (${m.type})`;
-        document.getElementById('scheduleList').appendChild(li);
+        list.appendChild(li);
       });
     }
-    loadSchedule();
+    document.addEventListener('DOMContentLoaded', loadSchedule);
   </script>
 </body>
 </html>
+

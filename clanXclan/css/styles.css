@@ -47,9 +47,8 @@ h2 {
   font-size: 2.2rem;
   margin-bottom: 15px;
 }
-p, input, select {
+p, input, select, button {
   font-size: 1.25rem;
-  line-height: 1.4;
 }
 input, select {
   width: 100%;

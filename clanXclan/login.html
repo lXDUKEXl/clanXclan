@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html>
-<head><title>Login</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script><script src="js/supabaseClient.js"></script></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - ClanxClan</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
 <body>
-  <h1>Login</h1>
-  <input id="email" placeholder="Email"><br>
-  <input id="password" type="password" placeholder="Password"><br>
-  <button onclick="login()">Login</button>
-
+  <header><nav>…</nav></header>
+  <div class="container">
+    <h2>Login</h2>
+    <input id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="js/supabaseClient.js"></script>
   <script>
-    async function login() {
-      const e = document.getElementById('email').value;
-      const p = document.getElementById('password').value;
-      const { error } = await supabase.auth.signInWithPassword({ email: e, password: p });
-      if (error) return alert(error.message);
-      alert('Logged in!'); window.location.href = 'clan.html';
-    }
+    async function login() {...}
   </script>
+  <footer><p>&copy; 2025 ClanxClan. All rights reserved.</p></footer>
 </body>
 </html>

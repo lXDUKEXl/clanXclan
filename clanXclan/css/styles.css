@@ -105,3 +105,41 @@ li {
   flex-direction: column;
   align-items: center;
 }
+/* === LOGO BAR === */
+.logo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #111;
+  padding: 10px 40px;
+}
+
+.logo-img {
+  height: 60px;
+  width: auto;
+}
+
+/* === HOMEPAGE HERO SECTION ONLY === */
+body.index-home .hero {
+  margin-top: 80px;
+  text-align: center;
+}
+
+body.index-home .hero-logo {
+  width: 220px;
+  height: auto;
+  margin-bottom: 25px;
+  box-shadow: 0 0 10px #000;
+}
+
+body.index-home .tagline {
+  font-size: 1.4em;
+  margin-bottom: 30px;
+  color: #ddd;
+}
+
+body.index-home .center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

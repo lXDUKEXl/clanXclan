@@ -1,13 +1,39 @@
 <!DOCTYPE html>
-<html>
-<head><title>Report Result</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script><script src="js/supabaseClient.js"></script></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Report Match - ClanxClan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
 <body>
-  <h1>Report</h1>
-  <label>Winner Clan ID:</label><input id="win"><br>
-  <label>MVP ID:</label><input id="mvp"><br>
-  <label>Score A:</label><input id="sa" type="number"><br>
-  <label>Score B:</label><input id="sb" type="number"><br>
-  <button onclick="submit()">Submit</button>
+  <div class="overlay">
+    <header>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Login</a>
+        <a href="clan.html">Clans</a>
+        <a href="matches.html">Matches</a>
+        <a href="leaderboard.html">Leaderboard</a>
+      </nav>
+    </header>
+    <div class="container">
+      <h2>Report Match Result</h2>
+      <label>Winner Clan ID:</label>
+      <input id="win" placeholder="Winning Clan ID"><br>
+      <label>MVP ID:</label>
+      <input id="mvp" placeholder="MVP User ID"><br>
+      <label>Score A:</label>
+      <input id="sa" type="number"><br>
+      <label>Score B:</label>
+      <input id="sb" type="number"><br>
+      <button onclick="submit()">Submit</button>
+    </div>
+    <footer>
+      <p>&copy; 2025 ClanxClan. All rights reserved.</p>
+    </footer>
+  </div>
   <script>
     const id = new URLSearchParams(window.location.search).get('id');
     async function submit() {
@@ -16,9 +42,14 @@
         winner: document.getElementById('win').value,
         mvp: document.getElementById('mvp').value
       };
-      const { error } = await supabase.from('matches').update({ status: 'Completed', result: res, mvp_id: res.mvp }).eq('id', id);
+      const { error } = await supabase.from('matches').update({
+        status: 'Completed',
+        result: res,
+        mvp_id: res.mvp
+      }).eq('id', id);
       if (error) return alert(error.message);
-      alert('Result submitted!'); window.location.href = 'matches.html';
+      alert('Result submitted!');
+      window.location.href = 'matches.html';
     }
   </script>
 </body>

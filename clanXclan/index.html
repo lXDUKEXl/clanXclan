@@ -2,92 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Invites – ClanxClan</title>
+  <title>ClanxClan – Home</title>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="js/supabaseClient.js"></script>
 </head>
 <body>
   <div class="overlay">
     <header>
       <nav>
-  <a href="/">Home</a>
-  <a href="signup.html">Sign Up</a>
-  <a href="login.html">Login</a>
-  <a href="clan.html">Clans</a>
-  <a href="matches.html">Matches</a>
-  <a href="leaderboard.html">Leaderboard</a>
-  <a href="schedule.html">Schedule</a>
-  <a href="invites.html">Invites</a>
-</nav>
+        <a href="/">Home</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Login</a>
+        <a href="clan.html">Clans</a>
+        <a href="matches.html">Matches</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="invites.html">Invites</a>
+      </nav>
     </header>
-    <div class="container">
-      <h2>Clan Invites</h2>
-      <input id="inviteUserId" placeholder="User ID to invite">
-      <button class="btn" onclick="sendInvite()">Send Invite</button>
-      <h3>Pending Invitations</h3>
-      <ul id="pendingList"></ul>
-    </div>
+
+    <section class="container hero">
+      <h1>ClanxClan</h1>
+      <p>The Competitive Clan Battle Hub</p>
+      <a href="signup.html"><button class="btn">Join the Battle</button></a>
+    </section>
 
     <footer>
       <p>&copy; 2025 ClanxClan. All rights reserved.</p>
     </footer>
   </div>
-
-  <script>
-    let currentUserId;
-    (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return window.location.href = 'login.html';
-      currentUserId = user.id;
-      loadInvites();
-    })();
-
-    async function sendInvite() {
-      const uid = document.getElementById('inviteUserId').value;
-      const { data: clan } = await supabase
-        .from('clans')
-        .select('id')
-        .eq('founder_id', currentUserId)
-        .single();
-      if (!clan) return alert('Only clan founder can send invites.');
-      const { error } = await supabase
-        .from('clan_invites')
-        .insert([{ clan_id: clan.id, user_id: uid }]);
-      if (error) return alert(error.message);
-      alert('Invite sent!');
-      loadInvites();
-    }
-
-    async function loadInvites() {
-      const { data } = await supabase
-        .from('clan_invites')
-        .select('id, clan_id, status')
-        .eq('user_id', currentUserId)
-        .eq('status', 'Pending');
-      const list = document.getElementById('pendingList');
-      list.innerHTML = '';
-      data.forEach(i => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          Clan: ${i.clan_id} | 
-          <button class="btn" onclick="respond('${i.id}','Accepted')">Accept</button> 
-          <button class="btn" onclick="respond('${i.id}','Declined')">Decline</button>
-        `;
-        list.appendChild(li);
-      });
-    }
-
-    async function respond(invId, status) {
-      const { error } = await supabase
-        .from('clan_invites')
-        .update({ status })
-        .eq('id', invId);
-      if (error) return alert(error.message);
-      alert('Invite ' + status);
-      loadInvites();
-    }
-  </script>
 </body>
 </html>

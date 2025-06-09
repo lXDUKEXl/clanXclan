@@ -1,45 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>ClanxClan – Matches</title>
+  <meta charset="UTF-8">
+  <title>Matches - ClanxClan</title>
   <link rel="stylesheet" href="css/styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="js/supabaseClient.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="js/supabaseClient.js"></script>
 </head>
 <body>
-  <h1>Matches</h1>
-  <label>Season:</label>
-  <select id="seasonSelect" onchange="loadMatches()">
-    <option value="S1">Season 1</option>
-    <option value="S2">Season 2</option>
-  </select>
-  <ul id="match-list"></ul>
-
-  <script>
-    async function loadMatches() {
-      const season = document.getElementById('seasonSelect').value;
-      const { data, error } = await supabase
-        .from('matches')
-        .select(`
-          id, match_date, type, status,
-          clanA:clan_a_id(name), clanB:clan_b_id(name)
-        `)
-        .eq('season', season)
-        .order('match_date', { ascending: false });
-      if (error) return alert('Error loading matches: ' + error.message);
-      const list = document.getElementById('match-list');
-      list.innerHTML = '';
-      data.forEach(m => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          ${m.clanA.name} vs ${m.clanB.name} on ${m.match_date} 
-          [${m.type} – ${m.status}]
-          ${m.status === 'Scheduled' ? ` <a href="report.html?id=${m.id}">Report</a>` : ''}
-        `;
-        list.appendChild(li);
-      });
-    }
-    document.addEventListener('DOMContentLoaded', loadMatches);
-  </script>
+  <header><nav>…</nav></header>
+  <div class="container">
+    <h2>Matches</h2>
+    <label>Season:</label>
+    <select id="seasonSelect" onchange="loadMatches()">
+      <option value="S1">Season 1</option>
+      <option value="S2">Season 2</option>
+    </select>
+    <ul id="match-list"></ul>
+  </div>
+<script>
+  async function loadMatches() {...} 
+  document.addEventListener('DOMContentLoaded', loadMatches);
+</script>
+  <footer><p>&copy; 2025 ClanxClan. All rights reserved.</p></footer>
 </body>
 </html>

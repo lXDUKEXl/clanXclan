@@ -1,63 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login – ClanxClan</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="overlay">
     <header>
-      <div class="logo-bar">
-        <img src="images/logo.png" class="logo-img" alt="Logo">
-        <nav>
-          <a href="index.html">Home</a>
-          <a href="signup.html">Sign Up</a>
-          <a href="login.html">Login</a>
-        </nav>
-      </div>
+      <a href="index.html"><img src="assets/logo.png" alt="Logo" class="logo"></a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Login</a>
+      </nav>
     </header>
 
     <main style="max-width: 500px; margin: 80px auto; text-align: center;">
       <h2>Login</h2>
       <form id="login-form">
-        <input type="email" id="email" placeholder="Email" required style="width:100%; padding:10px; margin:10px 0;">
-        <input type="password" id="password" placeholder="Password" required style="width:100%; padding:10px; margin:10px 0;">
-        <button type="submit" style="background:gold; padding:12px 20px; cursor:pointer;">Login</button>
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Login</button>
       </form>
     </main>
 
-    <footer><p>&copy; 2025 ClanxClan</p></footer>
+    <footer></footer>
   </div>
 
-  <!-- ✅ 1. Load Supabase library -->
+  <!-- ✅ 1. Load Supabase Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-  <!-- ✅ 2. Initialize Supabase client -->
+  <!-- ✅ 2. Supabase Client Initialization -->
   <script>
     const SUPABASE_URL = 'https://ndrodqttfvzlpwwztkne.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kcm9kcXR0ZnZ6bHB3d3p0a25lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0MzM4NzEsImV4cCI6MjA2NTAwOTg3MX0.PJCtvzYr8ECqUBzSlUPmgGwVsq3TTyjKfFfrgpMzrYk'; // ⛳ replace with your actual key
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kcm9kcXR0ZnZ6bHB3d3p0a25lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk0MzM4NzEsImV4cCI6MjA2NTAwOTg3MX0.PJCtvzYr8ECqUBzSlUPmgGwVsq3TTyjKfFfrgpMzrYk'; // Replace this
     const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   </script>
 
-  <!-- ✅ 3. Login script (must come after supabase is initialized) -->
+  <!-- ✅ 3. Login Logic -->
   <script>
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
+    const loginForm = document.getElementById('login-form');
+
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
-        alert('Login failed: ' + error.message);
+        alert("Login failed: " + error.message);
+        console.error(error);
       } else {
-        alert('Login successful!');
-        window.location.href = 'profile.html';
+        alert("Login successful!");
+        window.location.href = "profile.html";
       }
     });
   </script>

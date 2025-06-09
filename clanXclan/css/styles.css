@@ -143,3 +143,41 @@ body.index-home .center {
   flex-direction: column;
   align-items: center;
 }
+/* === HEADER & LOGO === */
+.logo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 10px 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.logo-img {
+  height: 60px;
+  width: auto;
+}
+
+/* === HERO SECTION === */
+.hero-banner {
+  background: url("../images/hero-bg.jpg") center/cover no-repeat;
+  height: calc(100vh - 100px);
+  position: relative;
+  z-index: 1;
+}
+
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+}
+
+/* Optional: Remove footer margin */
+footer {
+  background-color: #111;
+  text-align: center;
+  color: #888;
+  padding: 10px 0;
+  font-size: 0.9em;
+}

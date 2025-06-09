@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>Sign Up</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script><script src="js/supabaseClient.js"></script></head>
+<body>
+  <h1>Sign Up</h1>
+  <input id="username" placeholder="Username"><br>
+  <input id="email" placeholder="Email"><br>
+  <input id="password" type="password" placeholder="Password"><br>
+  <button onclick="signUp()">Sign Up</button>
+
+  <script>
+    async function signUp() {
+      const u = document.getElementById('username').value;
+      const e = document.getElementById('email').value;
+      const p = document.getElementById('password').value;
+      const { data, error } = await supabase.auth.signUp({ email: e, password: p });
+      if (error) return alert(error.message);
+      await supabase.from('profiles').insert([{ id: data.user.id, username: u }]);
+      alert('Signed up!'); window.location.href = 'login.html';
+    }
+    document.addEventListener('DOMContentLoaded', () => console.log('Loaded signup'));
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><title>Report Result</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script><script src="js/supabaseClient.js"></script></head>
+<body>
+  <h1>Report</h1>
+  <label>Winner Clan ID:</label><input id="win"><br>
+  <label>MVP ID:</label><input id="mvp"><br>
+  <label>Score A:</label><input id="sa" type="number"><br>
+  <label>Score B:</label><input id="sb" type="number"><br>
+  <button onclick="submit()">Submit</button>
+  <script>
+    const id = new URLSearchParams(window.location.search).get('id');
+    async function submit() {
+      const res = {
+        scores: { clanA: +document.getElementById('sa').value, clanB: +document.getElementById('sb').value },
+        winner: document.getElementById('win').value,
+        mvp: document.getElementById('mvp').value
+      };
+      const { error } = await supabase.from('matches').update({ status: 'Completed', result: res, mvp_id: res.mvp }).eq('id', id);
+      if (error) return alert(error.message);
+      alert('Result submitted!'); window.location.href = 'matches.html';
+    }
+  </script>
+</body>
+</html>

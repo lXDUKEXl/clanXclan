@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><title>Schedule Match</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script><script src="js/supabaseClient.js"></script></head>
+<body>
+  <h1>Schedule Match</h1>
+  <label>Clan A:</label><select id="clanA"></select><br>
+  <label>Clan B:</label><select id="clanB"></select><br>
+  <label>Type:</label><select id="type"><option>Ranked</option><option>Unranked</option></select><br>
+  <label>Date:</label><input type="date" id="md"><br>
+  <button onclick="create()">Create Match</button>
+  <script>
+    async function load() {
+      const { data } = await supabase.from('clans').select('id,name');
+      data.forEach(c => {
+        document.getElementById('clanA').innerHTML += `<option value="${c.id}">${c.name}</option>`;
+        document.getElementById('clanB').innerHTML += `<option value="${c.id}">${c.name}</option>`;
+      });
+    }
+    async function create() {
+      const ca = document.getElementById('clanA').value;
+      const cb = document.getElementById('clanB').value;
+      const t = document.getElementById('type').value;
+      const d = document.getElementById('md').value;
+      if (ca === cb) return alert("Clans must differ");
+      const { error } = await supabase.from('matches').insert([{ clan_a_id: ca, clan_b_id: cb, type: t, match_date: d, status: 'Scheduled' }]);
+      if (error) return alert(error.message);
+      alert('Match scheduled!');
+    }
+    load();
+  </script>
+</body>
+</html>

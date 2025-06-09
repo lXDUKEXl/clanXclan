@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ClanxClan ‒ Leaderboards</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="js/supabaseClient.js"></script>
+</head>
+<body>
+  <h1>Leaderboards</h1>
+  <h2>Clans by Wins</h2><ul id="clanBoard"></ul>
+  <h2>Top MVPs</h2><ul id="mvpBoard"></ul>
+
+  <script>
+    async function loadBoards() {
+      const { data: clanWins } = await supabase.rpc('get_clan_wins');
+      const { data: mvps } = await supabase.rpc('get_top_mvps');
+
+      clanWins.forEach(c => {
+        const li = document.createElement('li');
+        li.textContent = `${c.name}: ${c.wins} wins`;
+        document.getElementById('clanBoard').appendChild(li);
+      });
+
+      mvps.forEach(m => {
+        const li = document.createElement('li');
+        li.textContent = `${m.username}: ${m.mvp_count} MVPs`;
+        document.getElementById('mvpBoard').appendChild(li);
+      });
+    }
+    loadBoards();
+  </script>
+</body>
+</html>

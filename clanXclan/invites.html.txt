@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head><title>Clan Invites</title>...scripts...</head>
+<body>
+  <h1>Clan Invites</h1>
+  <h2>Send Invite</h2>
+  <input id="inviteUserId" placeholder="User ID">
+  <button onclick="sendInvite()">Send</button>
+  <h2>Pending Invites</h2><ul id="pendingList"></ul>
+  <script>
+    const userId = supabase.auth.getUser().then(r=>r.data.user.id);
+
+    async function sendInvite() {
+      const uid = document.getElementById('inviteUserId').value;
+      const current = (await userId);
+      const { data: cl } = await supabase.from('clans').select('id').eq('founder_id', current).single();
+      await supabase.from('clan_invites').insert([{ clan_id:cl.id, user_id:uid }]);
+      alert('Invite sent');
+    }
+
+    async function loadInvites() {
+      const current = (await userId);
+      const { data } = await supabase
+        .from('clan_invites')
+        .select('id,clan_id,status')
+        .eq('user_id', current).eq('status','Pending');
+      data.forEach(i => {
+        const li = document.createElement('li');
+        li.innerHTML = `Clan: ${i.clan_id} | <button onclick="respond('${i.id}','Accepted')">Accept</button>`;
+        document.getElementById('pendingList').appendChild(li);
+      });
+    }
+
+    async function respond(invId, resp) {
+      await supabase.from('clan_invites').update({status:resp}).eq('id',invId);
+      alert(`Invite ${resp}`);
+      loadInvites();
+    }
+
+    loadInvites();
+  </script>
+</body>
+</html>

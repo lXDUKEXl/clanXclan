@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>Upcoming Matches</title>...scripts...</head>
+<body>
+  <h1>Upcoming Matches</h1>
+  <ul id="scheduleList"></ul>
+  <script>
+    async function loadSchedule() {
+      const { data } = await supabase
+        .from('matches')
+        .select('clanA:clan_a_id(name), clanB:clan_b_id(name), match_date, type')
+        .gte('match_date', new Date().toISOString().split('T')[0])
+        .order('match_date', { ascending: true });
+      data.forEach(m => {
+        const li = document.createElement('li');
+        li.textContent = `${m.match_date}: ${m.clanA.name} vs ${m.clanB.name} (${m.type})`;
+        document.getElementById('scheduleList').appendChild(li);
+      });
+    }
+    loadSchedule();
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ClanxClan – Clans</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="js/supabaseClient.js"></script>
+  <script src="js/clans.js"></script>
+</head>
+<body>
+  <h1>Clans</h1>
+
+  <button onclick="createClan()">Create Clan</button>
+
+  <ul id="clan-list"></ul>
+
+  <script>
+    loadClans(); // Load all clans on page load
+  </script>
+</body>
+</html>

@@ -2,48 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sign Up - ClanxClan</title>
+  <title>Sign Up – ClanxClan</title>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="overlay">
     <header>
-      <nav>
-  <a href="/">Home</a>
-  <a href="signup.html">Sign Up</a>
-  <a href="login.html">Login</a>
-  <a href="clan.html">Clans</a>
-  <a href="matches.html">Matches</a>
-  <a href="leaderboard.html">Leaderboard</a>
-  <a href="schedule.html">Schedule</a>
-  <a href="invites.html">Invites</a>
-</nav>
+      <div class="logo-bar">
+        <img src="images/logo.png" alt="ClanxClan Logo" class="logo-img" />
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="signup.html">Sign Up</a>
+          <a href="login.html">Login</a>
+          <a href="clan.html">Clans</a>
+          <a href="matches.html">Matches</a>
+          <a href="leaderboard.html">Leaderboard</a>
+          <a href="schedule.html">Schedule</a>
+          <a href="invites.html">Invites</a>
+        </nav>
+      </div>
     </header>
-    <div class="container">
+
+    <main style="max-width: 500px; margin: 80px auto; text-align: center;">
       <h2>Sign Up</h2>
-      <input id="username" placeholder="Username">
-      <input id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <button onclick="signUp()">Sign Up</button>
-    </div>
+      <form id="signup-form">
+        <input type="text" id="username" placeholder="Username" required style="width: 100%; padding: 10px; margin: 10px 0;">
+        <input type="email" id="email" placeholder="Email" required style="width: 100%; padding: 10px; margin: 10px 0;">
+        <input type="password" id="password" placeholder="Password" required style="width: 100%; padding: 10px; margin: 10px 0;">
+        <button type="submit" style="background: gold; border: none; padding: 12px 20px; cursor: pointer;">Sign Up</button>
+      </form>
+    </main>
+
     <footer>
-      <p>&copy; 2025 ClanxClan. All rights reserved.</p>
+      <p>&copy; 2025 ClanxClan</p>
     </footer>
   </div>
+
+  <!-- Load Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="js/supabaseClient.js"></script>
+
   <script>
-    async function signUp() {
-      const u = document.getElementById('username').value;
-      const e = document.getElementById('email').value;
-      const p = document.getElementById('password').value;
-      const { data, error } = await supabase.auth.signUp({ email: e, password: p });
-      if (error) return alert(error.message);
-      await supabase.from('profiles').insert([{ id: data.user.id, username: u }]);
-      alert('Signed up!');
-      window.location.href = 'login.html';
-    }
+    const signupForm = document.getElementById('signup-form');
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !email || !password) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { username }
+        }
+      });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      const user = data.user;
+
+      if (user) {
+        await supabase.from('profiles').insert([
+          { id: user.id, username: username, role: 'player' }
+        ]);
+        alert("Signup successful! Please check your email to confirm.");
+        window.location.href = "login.html";
+      }
+    });
   </script>
 </body>
 </html>

@@ -1,1 +1,0 @@
-// POST handler for team creation

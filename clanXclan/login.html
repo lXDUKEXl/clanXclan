@@ -1,48 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Login – ClanxClan</title>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <div class="overlay">
     <header>
-      <nav>
-  <a href="/">Home</a>
-  <a href="signup.html">Sign Up</a>
-  <a href="login.html">Login</a>
-  <a href="clan.html">Clans</a>
-  <a href="matches.html">Matches</a>
-  <a href="leaderboard.html">Leaderboard</a>
-  <a href="schedule.html">Schedule</a>
-  <a href="invites.html">Invites</a>
-</nav>
+      <div class="logo-bar">
+        <img src="images/logo.png" alt="ClanxClan Logo" class="logo-img" />
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="signup.html">Sign Up</a>
+          <a href="login.html">Login</a>
+        </nav>
+      </div>
     </header>
 
-    <div class="container">
+    <main style="max-width: 500px; margin: 80px auto; text-align: center;">
       <h2>Login</h2>
-      <input id="email" type="email" placeholder="Email">
-      <input id="password" type="password" placeholder="Password">
-      <button onclick="login()">Login</button>
-    </div>
+      <form id="login-form">
+        <input type="email" id="email" placeholder="Email" required style="width:100%;padding:10px;margin:10px 0;" />
+        <input type="password" id="password" placeholder="Password" required style="width:100%;padding:10px;margin:10px 0;" />
+        <button type="submit" style="background: gold; border: none; padding: 12px 20px; cursor: pointer;">Login</button>
+      </form>
+    </main>
 
     <footer>
-      <p>&copy; 2025 ClanxClan. All rights reserved.</p>
+      <p>&copy; 2025 ClanxClan</p>
     </footer>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="js/supabaseClient.js"></script>
   <script>
-    async function login() {
-      const e = document.getElementById('email').value;
-      const p = document.getElementById('password').value;
-      const { error } = await supabase.auth.signInWithPassword({ email: e, password: p });
-      if (error) return alert(error.message);
-      window.location.href = 'clan.html';
-    }
+    const loginForm = document.getElementById('login-form');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        alert(error.message);
+      } else {
+        alert("Login successful!");
+        window.location.href = "clan.html"; // or profile.html if you create one
+      }
+    });
   </script>
 </body>
 </html>

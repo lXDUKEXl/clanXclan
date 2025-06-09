@@ -2,22 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login - ClanxClan</title>
+  <title>Login – ClanxClan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header><nav>…</nav></header>
-  <div class="container">
-    <h2>Login</h2>
-    <input id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+  <div class="overlay">
+    <header>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Login</a>
+        <a href="clan.html">Clans</a>
+        <a href="matches.html">Matches</a>
+        <a href="leaderboard.html">Leaderboard</a>
+      </nav>
+    </header>
+
+    <div class="container">
+      <h2>Login</h2>
+      <input id="email" type="email" placeholder="Email">
+      <input id="password" type="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 ClanxClan. All rights reserved.</p>
+    </footer>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="js/supabaseClient.js"></script>
   <script>
-    async function login() {...}
+    async function login() {
+      const e = document.getElementById('email').value;
+      const p = document.getElementById('password').value;
+      const { error } = await supabase.auth.signInWithPassword({ email: e, password: p });
+      if (error) return alert(error.message);
+      window.location.href = 'clan.html';
+    }
   </script>
-  <footer><p>&copy; 2025 ClanxClan. All rights reserved.</p></footer>
 </body>
 </html>
